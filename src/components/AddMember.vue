@@ -21,7 +21,7 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+          <el-button type="primary" @click="dialogFormVisible = false;'transName'">确 定</el-button>
         </div>
       </el-dialog>
     </div>
@@ -43,6 +43,11 @@
         formLabelWidth: '120px'
       };
     }, 
-  
+    methods:{
+      transName(){
+        console.log(form.memberName),
+        this.$emit("getName",form.memberName)
+      }
+    }
   };
 </script>
