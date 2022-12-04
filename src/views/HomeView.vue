@@ -52,7 +52,7 @@
 
           </div>
 
-          <MemberTable></MemberTable>
+          <IllegalRecordTable></IllegalRecordTable>
 
           <div style="padding: 13px 0">
             <el-pagination

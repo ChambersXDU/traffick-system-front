@@ -7,7 +7,7 @@
     </div>
 
     <div>
-      <el-button @click="dialogFormVisible = true" >新增员工 <i class="el-icon-circle-plus-outline"></i></el-button>
+      <el-button @click="dialogFormVisible = true">新增员工 <i class="el-icon-circle-plus-outline"></i></el-button>
       <el-dialog title="新增记录" :visible.sync="dialogFormVisible" width="30%" @close="addMember">
         <el-form :model="form">
           <el-form-item label="工号" :label-width="formLabelWidth">
@@ -33,26 +33,16 @@
       </el-dialog>
     </div>
 
-    <el-table :data="tableData" style="width: 100%" >
-      <el-table-column
-          prop="memberId"
-          label="工号">
+    <el-table :data="tableData" style="width: 100%">
+      <el-table-column prop="memberId" label="工号">
       </el-table-column>
-      <el-table-column
-          prop="memberName"
-          label="姓名">
+      <el-table-column prop="memberName" label="姓名">
       </el-table-column>
-      <el-table-column
-          prop="gender"
-          label="性别">
+      <el-table-column prop="gender" label="性别">
       </el-table-column>
-      <el-table-column
-          prop="teamId"
-          label="车队">
+      <el-table-column prop="teamId" label="车队">
       </el-table-column>
-      <el-table-column
-          prop="role"
-          label="职位">
+      <el-table-column prop="role" label="职位">
       </el-table-column>
       <el-table-column>
         <template slot-scope="scope">
@@ -84,16 +74,16 @@ export default {
       },
       dialogFormVisible: false,
       form: {
-          memberId: '',
-          memberName: '',
-          teamId: '',
-          gender: '',
-          role: ''
+        memberId: '',
+        memberName: '',
+        teamId: '',
+        gender: '',
+        role: ''
       },
       formLabelWidth: '120px'
     }
-  },components:{
-    AddMember,axios
+  }, components: {
+    AddMember, axios
   },
   methods: {
     searchByTeam() {
@@ -104,40 +94,45 @@ export default {
       }).then((response) => {
         this.tableData = response.data
       })
-    },addMember(){
+    }, addMember() {
       axios(
-       {
-        url:"/member/insert",
-        method:"POST",
-        data:{
-          memberId: this.form.memberId,
-          memberName: this.form.memberName,
-          gender: this.form.gender,
-          teamId: this.form.teamId,
-          role: this.form.role
+        {
+          url: "/member/insert",
+          method: "POST",
+          data: {
+            memberId: this.form.memberId,
+            memberName: this.form.memberName,
+            gender: this.form.gender,
+            teamId: this.form.teamId,
+            role: this.form.role
+          }
         }
-       }
       )
       this.dialogFormVisible = false
 
-    },deleteMember(id){
+    }, deleteMember(id) {
       axios(
-       {
-        url:"/member/delete",
-        method:"POST",
-        data:{
-          memberId: id
+        {
+          url: "/member/delete",
+          method: "POST",
+          data: {
+            memberId: id
+          }
         }
-       }
-      )
-      location.reload(); 
+      ).then((res) => {
+        console.log(res)
+        axios.get('/member/all')
+          .then((response) => {
+            this.tableData = response.data
+          })
+      })
     }
   },
   created() {
     axios.get('/member/all')
-        .then((response) => {
-          this.tableData = response.data
-        })    
+      .then((response) => {
+        this.tableData = response.data
+      })
   }
 }
 
