@@ -27,8 +27,12 @@
       <el-table-column prop="recordLicense" label="车牌号"> </el-table-column>
       <el-table-column>
         <template slot-scope="scope">
-          <el-button icon="el-icon-edit" circle></el-button>
-          <el-button icon="el-icon-delete" circle @click="deleteRecord(scope.row.recordId)"></el-button>
+
+          <el-popconfirm confirm-button-text='好的' cancel-button-text='不用了' icon="el-icon-info" icon-color="red"
+            title="确定要删除吗？此操作不可撤销" @confirm="deleteRecord(scope.row.recordId)">
+            <el-button slot="reference" icon="el-icon-delete" circle></el-button>
+          </el-popconfirm>
+
         </template>
       </el-table-column>
     </el-table>
@@ -68,8 +72,7 @@ export default {
     };
   },
   components: {
-    AddRecord,
-    axios,
+    AddRecord, axios,
   },
   methods: {
     searchByTeam() {
@@ -103,6 +106,7 @@ export default {
         console.log(res);
         axios.get("/record/all").then((response) => {
           this.tableData = response.data;
+          this.$message.success('添加成功');
         });
       });
     },
@@ -117,6 +121,8 @@ export default {
         console.log(res);
         axios.get("/record/all").then((response) => {
           this.tableData = response.data;
+          this.$message.success('已删除一条记录');
+          this.visible = false;
         });
       });
     },

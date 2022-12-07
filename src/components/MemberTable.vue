@@ -8,7 +8,7 @@
 
     <div>
       <el-button @click="dialogFormVisible = true">新增员工 <i class="el-icon-circle-plus-outline"></i></el-button>
-      <el-dialog title="新增记录" :visible.sync="dialogFormVisible" width="30%" @close="addMember">
+      <el-dialog title="新增记录" :visible.sync="dialogFormVisible" width="30%">
         <el-form :model="form">
           <el-form-item label="工号" :label-width="formLabelWidth">
             <el-input v-model.number="form.memberId" autocomplete="off" style="width: 200px"></el-input>
@@ -46,14 +46,16 @@
       </el-table-column>
       <el-table-column>
         <template slot-scope="scope">
-          <el-button icon="el-icon-edit" circle></el-button>
-          <el-button icon="el-icon-delete" circle @click="deleteMember(scope.row.memberId)"></el-button>
+          <el-popconfirm confirm-button-text='确定' cancel-button-text='不用了' icon="el-icon-info" icon-color="red"
+            title="确定要删除吗？此操作不可撤销" @confirm="deleteMember(scope.row.memberId)">
+            <el-button slot="reference" icon="el-icon-delete" circle></el-button>
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
 
     <div style="padding: 13px 0">
-      <el-pagination small  layout="prev, pager, next" :total="tableData.length">
+      <el-pagination small layout="prev, pager, next" :total="tableData.length">
       </el-pagination>
     </div>
 
@@ -87,6 +89,7 @@ export default {
         role: ''
       },
       formLabelWidth: '120px',
+
     }
   }, components: {
     AddMember, axios
@@ -113,9 +116,15 @@ export default {
             role: this.form.role
           }
         }
-      )
+      ).then((res) => {
+        console.log(res)
+        axios.get('/member/all')
+          .then((response) => {
+            this.tableData = response.data
+            this.$message.success('添加成功');
+          })
+      })
       this.dialogFormVisible = false
-
     }, deleteMember(id) {
       axios(
         {
@@ -130,6 +139,7 @@ export default {
         axios.get('/member/all')
           .then((response) => {
             this.tableData = response.data
+            this.$message.success('已删除一条记录');
           })
       })
     }

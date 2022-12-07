@@ -12,7 +12,8 @@
             <el-menu-item-group>
               <template slot="title"></template>
               <el-menu-item index="/member">成员列表</el-menu-item>
-              <el-menu-item index="/record">违章记录</el-menu-item>
+              <el-menu-item index="/record">违章记录列表</el-menu-item>
+              <el-menu-item index="/bus">汽车列表</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
         </el-menu>
@@ -43,7 +44,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import MemberTable from '@/components/MemberTable.vue';
 import RecordTable from '@/components/IllegalRecordTable.vue'
 import IllegalRecordTable from '@/components/IllegalRecordTable.vue';
