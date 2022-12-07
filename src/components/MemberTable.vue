@@ -53,7 +53,7 @@
     </el-table>
 
     <div style="padding: 13px 0">
-      <el-pagination small :current-page="currentPage" layout="prev, pager, next" :total="tableData.length">
+      <el-pagination small  layout="prev, pager, next" :total="tableData.length">
       </el-pagination>
     </div>
 

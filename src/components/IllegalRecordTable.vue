@@ -34,7 +34,7 @@
     </el-table>
 
     <div style="padding: 13px 0">
-      <el-pagination small hide-on-single-page="true" layout="prev, pager, next" :total="tableData.length">
+      <el-pagination small layout="prev, pager, next" :total="tableData.length">
       </el-pagination>
     </div>
 
