@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import Member from '../components/MemberTable.vue'
+import MemberTable from '../components/MemberTable.vue'
+import RecordTable from '../components/IllegalRecordTable.vue'
 
 Vue.use(VueRouter)
 
@@ -9,7 +10,18 @@ const routes = [
     {
         path: '/',
         name: 'home',
-        component: HomeView
+        component: HomeView,
+        children:
+            [
+                {
+                    path: '/member',
+                    component: MemberTable,
+                },
+                {
+                    path: '/record',
+                    component: RecordTable,
+                }
+            ]
     },
     {
         path: '/about',

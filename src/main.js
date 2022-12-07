@@ -8,7 +8,7 @@ import axios from 'axios'
 
 Vue.config.productionTip = false
 
-Vue.use(ElementUI, {size: "mini"});
+Vue.use(ElementUI, { size: "mini" });
 
 axios.defaults.baseURL = 'http://localhost:8080'
 Vue.prototype.$http = axios

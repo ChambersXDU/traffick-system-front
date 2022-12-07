@@ -51,6 +51,12 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <div style="padding: 13px 0">
+      <el-pagination small :current-page="currentPage" layout="prev, pager, next" :total="tableData.length">
+      </el-pagination>
+    </div>
+
   </div>
 </template>
 
@@ -80,7 +86,7 @@ export default {
         gender: '',
         role: ''
       },
-      formLabelWidth: '120px'
+      formLabelWidth: '120px',
     }
   }, components: {
     AddMember, axios
