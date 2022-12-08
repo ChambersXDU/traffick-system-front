@@ -15,7 +15,7 @@
       <AddRecord @getAdd="getAdd"></AddRecord>
     </div>
 
-    <el-table :data="tableData" style="width: 100%">
+    <el-table :data="tableData_in_page" style="width: 100%">
       <el-table-column prop="recordId" label="违章记录编号"> </el-table-column>
       <el-table-column prop="recorderId" label="录入者工号"> </el-table-column>
       <el-table-column prop="makerId" label="肇事者工号"> </el-table-column>
@@ -38,7 +38,7 @@
     </el-table>
 
     <div style="padding: 13px 0">
-      <el-pagination small layout="prev, pager, next" :total="tableData.length">
+      <el-pagination small layout="prev, next" :total="tableData.length" @prev-click="prevPage" @next-click="nextPage">
       </el-pagination>
     </div>
 
@@ -69,6 +69,7 @@ export default {
         license: "",
         team: "",
       },
+      cur_page: 1
     };
   },
   components: {
@@ -129,6 +130,12 @@ export default {
     dateFormat(date) {
       return moment(date).format("YYYY-MM-DD")
     },
+    prevPage() {
+      this.cur_page--
+    },
+    nextPage() {
+      this.cur_page++
+    }
   },
   created() {
     //生命创建阶段，读取整个表
@@ -136,5 +143,10 @@ export default {
       this.tableData = response.data;
     });
   },
+  computed: {
+    tableData_in_page() {
+      return this.tableData.slice((this.cur_page - 1) * 10, this.cur_page * 10)
+    }
+  }
 };
 </script>

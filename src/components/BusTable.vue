@@ -7,7 +7,7 @@
         </div>
 
         <div>
-            <el-button @click="dialogFormVisible = true">新增汽车<i class="el-icon-circle-plus-outline"></i></el-button>
+            <el-button @click="dialogFormVisible = true">新增汽车 <i class="el-icon-circle-plus-outline"></i></el-button>
             <el-dialog title="新增汽车" :visible.sync="dialogFormVisible" width="30%">
                 <el-form :model="form">
                     <el-form-item label="车牌号" :label-width="formLabelWidth">
@@ -27,7 +27,7 @@
             </el-dialog>
         </div>
 
-        <el-table :data="tableData" style="width: 100%">
+        <el-table :data="tableData_in_page" style="width: 100%">
             <el-table-column prop="busLicense" label="车牌号">
             </el-table-column>
             <el-table-column prop="seat" label="座位数">
@@ -36,14 +36,17 @@
             </el-table-column>
             <el-table-column>
                 <template slot-scope="scope">
-                    <el-button icon="el-icon-edit" circle></el-button>
-                    <el-button icon="el-icon-delete" circle @click="deleteBus(scope.row.busLicense)"></el-button>
+                    <el-popconfirm confirm-button-text='好的' cancel-button-text='不用了' icon="el-icon-info"
+                        icon-color="red" title="确定要删除吗？此操作不可撤销" @confirm="deleteBus(scope.row.busLicense)">
+                        <el-button slot="reference" icon="el-icon-delete" circle></el-button>
+                    </el-popconfirm>
                 </template>
             </el-table-column>
         </el-table>
 
         <div style="padding: 13px 0">
-            <el-pagination small layout="prev, pager, next" :total="tableData.length">
+            <el-pagination small layout="prev, next" :total="tableData.length" @prev-click="prevPage"
+                @next-click="nextPage">
             </el-pagination>
         </div>
 
@@ -74,6 +77,7 @@ export default {
                 lineId: ''
             },
             formLabelWidth: '120px',
+            cur_page: 1
         }
     }, components: {
         axios
@@ -81,7 +85,7 @@ export default {
         searchByLine() {
             axios.request('/bus/line', {
                 params: {
-                    "lineId": this.input.lineid
+                    "lineid": this.input.lineid
                 }
             }).then((response) => {
                 this.tableData = response.data
@@ -121,12 +125,20 @@ export default {
                         this.tableData = response.data
                     })
             })
+        }, prevPage() {
+            this.cur_page--
+        }, nextPage() {
+            this.cur_page++
         }
     }, created() {
         axios.get('/bus/all')
             .then((response) => {
                 this.tableData = response.data
             })
+    }, computed: {
+        tableData_in_page() {
+            return this.tableData.slice((this.cur_page - 1) * 10, this.cur_page * 10)
+        }
     }
 }
 

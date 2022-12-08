@@ -8,7 +8,7 @@
 
     <div>
       <el-button @click="dialogFormVisible = true">新增员工 <i class="el-icon-circle-plus-outline"></i></el-button>
-      <el-dialog title="新增记录" :visible.sync="dialogFormVisible" width="30%">
+      <el-dialog title="新增员工" :visible.sync="dialogFormVisible" width="30%">
         <el-form :model="form">
           <el-form-item label="工号" :label-width="formLabelWidth">
             <el-input v-model.number="form.memberId" autocomplete="off" style="width: 200px"></el-input>
@@ -33,7 +33,7 @@
       </el-dialog>
     </div>
 
-    <el-table :data="tableData" style="width: 100%">
+    <el-table :data="tableData_in_page" style="width: 100%">
       <el-table-column prop="memberId" label="工号">
       </el-table-column>
       <el-table-column prop="memberName" label="姓名">
@@ -55,7 +55,7 @@
     </el-table>
 
     <div style="padding: 13px 0">
-      <el-pagination small layout="prev, pager, next" :total="tableData.length">
+      <el-pagination small layout="prev, next" :total="tableData.length" @prev-click="prevPage" @next-click="nextPage">
       </el-pagination>
     </div>
 
@@ -89,7 +89,7 @@ export default {
         role: ''
       },
       formLabelWidth: '120px',
-
+      cur_page: 1
     }
   }, components: {
     AddMember, axios
@@ -142,6 +142,10 @@ export default {
             this.$message.success('已删除一条记录');
           })
       })
+    }, prevPage() {
+      this.cur_page--
+    }, nextPage() {
+      this.cur_page++
     }
   },
   created() {
@@ -149,6 +153,10 @@ export default {
       .then((response) => {
         this.tableData = response.data
       })
+  }, computed: {
+    tableData_in_page() {
+      return this.tableData.slice((this.cur_page - 1) * 10, this.cur_page * 10)
+    }
   }
 }
 
